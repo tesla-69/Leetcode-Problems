@@ -5,13 +5,13 @@ public:
         queue< pair< pair<int,int> ,int> > q;
         int n = grid.size();
         int m = grid[0].size();
-        vector<vector<int> > vis (n,vector<int>(m,0));
+        // vector<vector<int> > vis (n,vector<int>(m,0));
         int cntf=0;
         for(int i =0 ;i<n;i++){
             for(int j=0;j<m;j++){
                 if(copy[i][j] == 2) {
                     q.push({{i,j},0});
-                    vis[i][j] = 1;
+                    // vis[i][j] = 1;
                 }
                 else if(copy[i][j] == 1) cntf++;
             }
@@ -31,9 +31,9 @@ public:
                     int nr = r + a;
                     int nc = c + b;
 
-                    if(nr>=0 && nr<n && nc>=0 && nc<m && copy[nr][nc] == 1 && !vis[nr][nc]){
+                    if(nr>=0 && nr<n && nc>=0 && nc<m && copy[nr][nc] == 1 ){
                         copy[nr][nc] = 2;
-                        vis[nr][nc] = 1;
+                        // vis[nr][nc] = 1;
                         q.push({{nr,nc},t+1});
                         cnt++;
                     }
