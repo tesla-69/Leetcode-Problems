@@ -19,13 +19,9 @@ public:
     vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
         int n = image.size();
         int m = image[0].size();
-        vector<vector<int> > copy(n,vector<int>(m,0));
+        vector<vector<int> > copy = image;
         vector<vector<int> > vis(n,vector<int>(m,0));
-        for(int i=0;i<n;i++){
-            for(int j=0;j<m;j++){
-                copy[i][j] = image[i][j];
-            }
-        }
+        
         int oldcolor = image[sr][sc];
         
         dfs(sr,sc,image,vis,copy,oldcolor,color,n,m);
