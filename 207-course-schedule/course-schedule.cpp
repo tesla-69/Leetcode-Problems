@@ -1,13 +1,5 @@
 class Solution {
 public:
-    void topo(vector<int> adj[], stack<int>& s, vector<int>& vis, int k) {
-        vis[k] = 1;
-        for (auto it : adj[k]) {
-            if (!vis[it])
-                topo(adj, s, vis, it);
-        }
-        s.push(k);
-    }
     bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
         vector<int> adj[numCourses];
         for (auto it : prerequisites) {
