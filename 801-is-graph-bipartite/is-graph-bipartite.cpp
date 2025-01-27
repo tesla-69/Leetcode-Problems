@@ -1,33 +1,22 @@
 class Solution {
-public:
-
-    bool dfs(int i ,int parent, int color[] , vector<vector<int>>& graph){
-        if(parent == -1) {
-            color[i] = 0;
-        }
-        else {
-            color[i] = !color[parent];
-        }
-        for(auto it:graph[i]) {
-            if(color[it] == -1) {
-                if(dfs(it,i,color,graph) == false) return false;
-            }
-            else if(color[it] == color[i]) {
-                return false;
-            }
+private: 
+    bool dfs(vector<vector<int>> &graph , vector<int> &color , int node, int col) {
+        // if(color[node] == -1)
+            color[node] = col;
+        for(auto it : graph[node]) {
+            if(color[it] == col) return false;
+            else if(color[it] == -1) 
+                if(dfs(graph,color,it,!col) == false) return false;
         }
         return true;
     }
-
+public:
     bool isBipartite(vector<vector<int>>& graph) {
-        int V = graph.size();
-        int color[V];
-        for(int i=0;i<V;i++){
-            color[i] = -1;
-        }
-        for(int i=0;i<V;i++){
+        int n = graph.size();
+        vector<int> color(n,-1);
+        for(int i=0; i<n; i++){
             if(color[i] == -1) {
-                if(dfs(i,-1,color,graph) == false) return false;
+                if(dfs(graph,color,i,0) == false) return false;
             }
         }
         return true;
