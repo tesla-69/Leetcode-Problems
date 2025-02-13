@@ -16,9 +16,6 @@ public:
         while(j < n) {
             ans.push_back(nums2[j++]);
         }
-        cout<<ans.size()<<endl;
-        for(int i = 0; i< m+n; i++) cout<<ans[i]<<endl;
-        cout<<endl;
         for(int i =0;i<m+n;i++) nums1[i] = ans[i];
         // return ans;
     }
