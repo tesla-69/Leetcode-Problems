@@ -2,17 +2,20 @@ class Solution {
 public:
     int removeDuplicates(vector<int>& nums) {
         int n = nums.size();
-        int k =0;
+        int k = 1;
         set<int> s;
-        for(int i=0;i<n;i++){
-            s.insert(nums[i]);
+        nums.push_back(nums[0]);
+
+        for(int i=1;i<n;i++){
+            if(nums[i] != nums[i-1]){
+                nums.push_back(nums[i]);
+                k++;
+            }
         }
-        k = s.size();
-        int i =0;
-        for(auto it: s){
-            nums[i] = it;
-            i++;
-        }
+        for(int i=0;i<nums.size();i++) cout<<nums[i]<<" ";
+        cout<<endl;
+        reverse(nums.begin(),nums.end());
+        sort(nums.begin(),nums.begin()+k);
         return k;
     }
 };
