@@ -1,16 +1,13 @@
 class Solution {
 public:
     int majorityElement(vector<int>& nums) {
-        int n=nums.size();
-        int res=0;
-        unordered_map<int,int> storeValues;
-        for(int i=0;i<n;i++){
-            storeValues[nums[i]]++;
+        map<int,int> mp;
+        int n = nums.size();
+        for(int i =0 ; i < nums.size();i++) mp[nums[i]]++;
+        int ans ;
+        for(auto it : mp) {
+            if(it.second > n/2) ans = it.first;
         }
-        for(auto& pair : storeValues){
-            if(pair.second>n/2){
-                res=pair.first;
-            }
-        } return res;
+        return ans;
     }
 };
