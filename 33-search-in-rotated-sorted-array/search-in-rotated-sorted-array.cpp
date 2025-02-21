@@ -5,8 +5,7 @@ public:
         while(low<=high){
             int mid=(low+high)>>1;
             if(nums[mid]==target)return mid;
-            if(nums[low]<=nums[mid]) (target>=nums[low] && target<=nums[mid]) ? high=mid-1 : low=mid+1;
-            else (target>=nums[mid] && target<=nums[high]) ? low=mid+1 : high=mid-1;
+            (nums[low]<=nums[mid]) ? ((target>=nums[low] && target<=nums[mid]) ? high=mid-1 : low=mid+1 ) : ((target>=nums[mid] && target<=nums[high]) ? low=mid+1 : high=mid-1);
         }
         return -1;
     }
