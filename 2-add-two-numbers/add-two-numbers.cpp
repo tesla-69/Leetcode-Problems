@@ -35,7 +35,6 @@ public:
                 tail->next = temp;
                 tail = temp;
             }
-            
         }
         return head;
     }
