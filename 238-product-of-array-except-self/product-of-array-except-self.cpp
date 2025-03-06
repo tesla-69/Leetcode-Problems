@@ -15,12 +15,6 @@ public:
             vector<int> ans(n, 0);
             return ans;
         }
-        else if(cnt == 1) {
-            vector<int> ans(n,0);
-            for(int i =0; i<n; i++) {
-                if(i == ind) ans[i] = nums[i];
-            }
-        }
         for (int i = 0; i < n; i++) {
             pre[i + 1] = pre[i] * nums[i];
         }
@@ -33,14 +27,6 @@ public:
         for(int i = 0 ;i < n;i++) {
             ans[i] = pre[i] * suf[i+1];
         }
-        for(int i =0; i<= n; i++) {
-            cout<<pre[i]<<" ";
-        }
-        cout<<endl;
-        for(int i =0; i<= n; i++) {
-            cout<<suf[i]<<" ";
-        }
-        cout<<endl;
         return ans;
     }
 };
