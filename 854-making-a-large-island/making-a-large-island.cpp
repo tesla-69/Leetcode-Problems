@@ -1,70 +1,116 @@
-class Solution {
-    int d[5] = {1, 0, -1, 0, 1}; // Direction vectors
-    int n;
-
-    // Depth-First Search to mark island and calculate its size
-    int dfs(int row, int col, int id, vector<vector<int>>& grid) {
-        grid[row][col] = id; // Mark cell with island ID
-        int cnt = 1; // Initialize size of the island
-
-        for (int i = 0; i < 4; i++) { // Explore all 4 directions
-            int nr = row + d[i];
-            int nc = col + d[i + 1];
-
-            if (nr >= 0 && nc >= 0 && nr < n && nc < n && grid[nr][nc] == 1)
-                cnt += dfs(nr, nc, id, grid);
-        }
-
-        return cnt; // Return the total size of the island
-    }
+class disjointSet
+{
 
 public:
-    int largestIsland(vector<vector<int>>& grid) {
-        n = grid.size(); 
-        vector<int> key; // Store sizes of all islands
-        int id = 2; // Island IDs start from 2
-
-        // Identify all islands and calculate their sizes
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                if (grid[i][j] == 1)
-                    key.push_back(dfs(i, j, id++, grid));
-            }
+    vector<int> parent, rank, size;
+    disjointSet(int n)
+    {
+        parent.resize(n + 1);
+        rank.resize(n + 1, 0);
+        size.resize(n + 1, 1);
+        for (int i = 0; i <= n; i++)
+            parent[i] = i;
+    }
+    int findUPar(int node)
+    {
+        if (parent[node] == node)
+            return node;
+        return parent[node] = findUPar(parent[node]);
+    }
+    void unionByRank(int u, int v)
+    {
+        int ulp_u = findUPar(u);
+        int ulp_v = findUPar(v);
+        if (ulp_u == ulp_v)
+            return;
+        if (rank[ulp_u] < rank[ulp_v])
+            parent[ulp_u] = ulp_v;
+        else if (rank[ulp_v] < rank[ulp_u])
+            parent[ulp_v] = ulp_u;
+        else
+        {
+            parent[ulp_v] = ulp_u;
+            rank[ulp_u]++;
         }
+    }
+    void unionBySize(int u, int v)
+    {
+        int ulp_u = findUPar(u);
+        int ulp_v = findUPar(v);
+        if (ulp_u == ulp_v)
+            return;
+        if (size[ulp_u] < size[ulp_v])
+        {
+            parent[ulp_u] = ulp_v;
+            size[ulp_v] += size[ulp_u];
+        }
+        else
+        {
+            parent[ulp_v] = ulp_u;
+            size[ulp_u] += size[ulp_v];
+        }
+    }
+};
 
-        if (key.empty()) return 1; // Grid contains no land
+// User function Template for C++
 
-        int ans = 1;
 
-        // Check all water cells and calculate potential island size
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                if (grid[i][j] == 0) {
-                    int cnt = 1;
-
-                    // Add sizes of neighboring islands
-                    for (int k = 0; k < 4; k++) {
-                        int nr = i + d[k];
-                        int nc = j + d[k + 1];
-
-                        if (nr >= 0 && nc >= 0 && nr < n && nc < n && grid[nr][nc] != 0 && key[grid[nr][nc] - 2] > 0)
-                            cnt += key[grid[nr][nc] - 2], key[grid[nr][nc] - 2] *= -1; // Mark island as visited
+class Solution {
+public:
+    int largestIsland(vector<vector<int>>& grid) {
+         int n = grid.size();
+        int m = grid[0].size();
+        disjointSet ds(n*m);
+        vector<vector<int>> vis(n, vector<int>(m,0));
+        for(int r = 0; r<n; r++) {
+            for(int c= 0; c<m; c++) {
+                if(grid[r][c] == 1 ) {
+                    for(int i = -1; i<=1; i++) {
+                        for(int j = -1; j<=1; j++) {
+                            if(abs(i) == 1 && abs(j) == 1) continue;
+                            int nr = r + i;
+                            int nc = c + j;
+                            if(nr >= 0 && nr < n && nc >= 0 && nc < m) {
+                                if(grid[nr][nc] == 1 ) {
+                                    int node = r * m + c;
+                                    int adjnode = nr *m + nc;
+                                    ds.unionBySize(node,adjnode);
+                                }
+                            }
+                        } 
                     }
-
-                    // Reset the sizes of marked islands
-                    for (int k = 0; k < 4; k++) {
-                        int nr = i + d[k];
-                        int nc = j + d[k + 1];
-
-                        if (nr >= 0 && nc >= 0 && nr < n && nc < n && grid[nr][nc] != 0 && key[grid[nr][nc] - 2] < 0)
-                            key[grid[nr][nc] - 2] *= -1; // Unmark island
-                    }
-
-                    ans = max(ans, cnt); // Update the largest possible island size
                 }
             }
         }
-
-        return ans == 1 ? n * n : ans; // Return result
+        int ans = 0;
+        for(auto it : ds.size) {
+            ans = max(ans, it);
+        }
+        for(int r = 0; r < n; r++) {
+            for(int c = 0 ; c < m; c++) {
+                if(grid[r][c] == 0) {
+                    set<int> s;
+                    for(int i = -1; i <= 1; i++) {
+                        for(int j = -1; j <= 1; j++) {
+                            if(abs(i) == 1 && abs(j) == 1) continue;
+                            int nr = r + i;
+                            int nc = c + j;
+                            if(nr >= 0 && nr < n && nc >= 0 && nc < m){
+                                int node = nr* m + nc;
+                                if(grid[nr][nc] == 1) 
+                                    s.insert(ds.findUPar(node));
+                            }
+                        }
+                    }
+                    int curr = 0;
+                    for(auto it : s) {
+                        curr += ds.size[it];
+                    }
+                    curr++;
+                    ans = max(ans, curr);
+                }
+            }
+        }
+        return ans;
     }
 };
