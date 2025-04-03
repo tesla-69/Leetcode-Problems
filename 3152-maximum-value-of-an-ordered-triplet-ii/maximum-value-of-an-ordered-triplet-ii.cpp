@@ -12,10 +12,10 @@ public:
         for(int i = n-1; i >= 0; i--) {
             suf[i] = max(suf[i+1], nums[i]);
         }
-        for(int i = 0; i<=n; i++) cout<<pre[i]<<" ";
-        cout<<endl;
-        for(int i = 0; i<=n; i++) cout<<suf[i]<<" ";
-        cout<<endl;
+        // for(int i = 0; i<=n; i++) cout<<pre[i]<<" ";
+        // cout<<endl;
+        // for(int i = 0; i<=n; i++) cout<<suf[i]<<" ";
+        // cout<<endl;
         for(int i = 1; i<n-1; i++) {
             long long t = (pre[i] - nums[i]);
             t *= suf[i+1];
