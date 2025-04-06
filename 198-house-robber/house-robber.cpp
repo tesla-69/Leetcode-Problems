@@ -9,7 +9,15 @@ class Solution {
 public:
     int rob(vector<int>& nums) {
         int n = nums.size();
-        vector<int> dp(n, -1);
-        return solve(n-1, nums, dp);
+        vector<int> dp(n+1, 0);
+        dp[0] = nums[0];
+        // return solve(n-1, nums, dp);
+        for(int i = 1; i<n; i++) {
+            int take = nums[i];
+            if(i-2 >=0) take += dp[i-2];
+            int ntake = dp[i-1];
+            dp[i] = max(take, ntake);
+        }
+        return dp[n-1];
     }
 };
