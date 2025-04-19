@@ -6,10 +6,9 @@ public:
         int i = 0, j = 0;
         long long cnt = 0;
         int subarr = 0;
-        while(j < n && i < n) {
+        while(j < n) {
             subarr += mp[nums[j]];
             mp[nums[j]]++;
-            cout<<subarr<<" ";
 
             while(subarr >= k) {
                 cnt += n - j;
