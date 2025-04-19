@@ -1,22 +1,25 @@
 class Solution {
 public:
     long long countGood(vector<int>& nums, int k) {
+        unordered_map<int,int> mp;
         int n = nums.size();
-        int same = 0, right = -1;
-        unordered_map<int, int> cnt;
-        long long ans = 0;
-        for (int left = 0; left < n; ++left) {
-            while (same < k && right + 1 < n) {
-                ++right;
-                same += cnt[nums[right]];
-                ++cnt[nums[right]];
+        int i = 0, j = 0;
+        long long cnt = 0;
+        int subarr = 0;
+        while(j < n && i < n) {
+            subarr += mp[nums[j]];
+            mp[nums[j]]++;
+            cout<<subarr<<" ";
+
+            while(subarr >= k) {
+                cnt += n - j;
+                subarr -= mp[nums[i]] - 1;
+                mp[nums[i]]--;
+                i++;
             }
-            if (same >= k) {
-                ans += n - right;
-            }
-            --cnt[nums[left]];
-            same -= cnt[nums[left]];
+
+            j++;
         }
-        return ans;
+        return cnt;
     }
 };
