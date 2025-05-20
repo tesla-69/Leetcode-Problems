@@ -1,11 +1,11 @@
 class Solution {
 public:
-    bool isZeroArray(vector<int>& nums, vector<vector<int>>& queries) {
+    bool isZeroArray(vector<int>& nums, vector<vector<int>>& q) {
         int n = nums.size();
         vector<int> diffArr(n,0);
-        for(auto it: queries) {
-            int i = it[0];
-            int j = it[1];
+        int m = q.size();
+        for(int k = 0; k < m; k++) {
+            int i = q[k][0], j = q[k][1];
             diffArr[i] += 1;
             if(j != n-1) diffArr[j+1] -= 1;
         }
