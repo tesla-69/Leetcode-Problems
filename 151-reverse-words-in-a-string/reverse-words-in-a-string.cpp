@@ -1,23 +1,31 @@
 class Solution {
 public:
     string reverseWords(string s) {
+        stack<string> st;
         int n = s.size();
-        int i= 0;
-        string ans;
+        int i = 0;
         while(i < n) {
+            cout<<i<<" ";
+            while(i < n && s[i] == ' ') i++;
+            cout<<i<<" ";
             string temp;
-            while(i<n && s[i] == ' ') i++;
-            if(i == n) break;
-            while(i<n && s[i] != ' ') {
+            while( i < n && s[i] != ' ') {
                 temp += s[i];
                 i++;
             }
-            temp += ' ';
-            string a = ans;
-            ans = temp;
-            ans += a;
+            cout<<temp<<endl;
+            if(temp != "")
+            st.push(temp);
         }
-        ans = ans.substr(0,ans.size()-1);
+        string ans;
+        while(!st.empty()) {
+            cout<<st.top()<<endl;
+            ans += st.top();
+            st.pop();
+            ans += ' ';
+        }
+        ans.pop_back();
         return ans;
+        
     }
 };
