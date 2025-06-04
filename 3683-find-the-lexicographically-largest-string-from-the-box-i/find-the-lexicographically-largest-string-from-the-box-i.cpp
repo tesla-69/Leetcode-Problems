@@ -17,9 +17,9 @@ public:
         for (int i = 0; i < n; i++) {
             if (word[i] == lar) {
                 int sz = min(n - i, len);
-                cout<<len<<" "<<n-i<<" "<<sz<<endl;
+                // cout<<len<<" "<<n-i<<" "<<sz<<endl;
                 string temp = word.substr(i, sz);
-                cout<<temp<<endl;
+                // cout<<temp<<endl;
                 if(temp > sub) sub = temp;
             }
         }
