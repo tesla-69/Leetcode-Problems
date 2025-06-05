@@ -1,34 +1,38 @@
 class Solution {
 public:
-    int row, col;
-    int dp[70][70][70];
+    
+    int solve(vector<vector<int>>& grid, int n, int m1, int m2, vector<vector<vector<int>>> &dp) {
+        if(m1 < 0 || m1 >= grid[0].size() || m2 < 0 || m2 >= grid[0].size()) return 0;
+        if(n == grid.size() - 1) {
+            if(m1 == m2) return grid[n][m1];
+            else return grid[n][m1] + grid[n][m2];
+        }
 
-    int solve(int r, int c1, int c2, vector<vector<int>>& grid){
-        if(c1 < 0 || c1 >= col || c2 < 0 || c2 >= col || r >= row) return 0;
-        if(dp[r][c1][c2] != -1) return dp[r][c1][c2];
+        if(dp[n][m1][m2] != -1) return dp[n][m1][m2];
 
-        int ans = 0;
-        if(c1 == c2) ans = grid[r][c1];
-        else ans = grid[r][c1] + grid[r][c2];
+        int a = solve(grid, n+1, m1-1, m2-1, dp);
+        int b = solve(grid, n+1, m1-1, m2, dp);
+        int c = solve(grid, n+1, m1-1, m2+1, dp);
+        int d = solve(grid, n+1, m1, m2-1, dp);
+        int e = solve(grid, n+1, m1, m2, dp);
+        int f = solve(grid, n+1, m1, m2+1, dp);
+        int g = solve(grid, n+1, m1+1, m2-1, dp);
+        int h = solve(grid, n+1, m1+1, m2, dp);
+        int i = solve(grid, n+1, m1+1, m2+1, dp);
 
-        int a = solve(r+1, c1-1, c2-1, grid);
-        int b = solve(r+1, c1-1, c2, grid);
-        int c = solve(r+1, c1-1, c2+1, grid);
-        int d = solve(r+1, c1, c2-1, grid);
-        int e = solve(r+1, c1, c2, grid);
-        int f = solve(r+1, c1, c2+1, grid);
-        int g = solve(r+1, c1+1, c2-1, grid);
-        int h = solve(r+1, c1+1, c2, grid);
-        int i = solve(r+1, c1+1, c2+1, grid);
+        if(m1 == m2) {
+            return dp[n][m1][m2] = max({a,b,c,d,e,f,g,h,i}) + grid[n][m1];
+        }
+        else return dp[n][m1][m2] = max({a,b,c,d,e,f,g,h,i}) + grid[n][m1] + grid[n][m2];
+    } 
 
-        ans += max(i, max( max(max(a, b), max(c, d)), max(max(e, f), max(g, h)) ));
-        return dp[r][c1][c2] = ans;
-    }
 
     int cherryPickup(vector<vector<int>>& grid) {
-        row = grid.size(), col = grid[0].size();
-        memset(dp, -1, sizeof(dp));
-        
-        return solve(0, 0, col-1, grid);
+        int n = grid.size();
+        int m = grid[0].size();
+        vector<vector<vector<int>>> dp(n, vector<vector<int>>(m, vector<int>(m, -1)));
+
+        return solve(grid, 0, 0, m-1, dp);
+
     }
 };
