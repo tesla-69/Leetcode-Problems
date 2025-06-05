@@ -9,21 +9,14 @@ public:
         }
 
         if(dp[n][m1][m2] != -1) return dp[n][m1][m2];
-
-        int a = solve(grid, n+1, m1-1, m2-1, dp);
-        int b = solve(grid, n+1, m1-1, m2, dp);
-        int c = solve(grid, n+1, m1-1, m2+1, dp);
-        int d = solve(grid, n+1, m1, m2-1, dp);
-        int e = solve(grid, n+1, m1, m2, dp);
-        int f = solve(grid, n+1, m1, m2+1, dp);
-        int g = solve(grid, n+1, m1+1, m2-1, dp);
-        int h = solve(grid, n+1, m1+1, m2, dp);
-        int i = solve(grid, n+1, m1+1, m2+1, dp);
-
-        if(m1 == m2) {
-            return dp[n][m1][m2] = max({a,b,c,d,e,f,g,h,i}) + grid[n][m1];
+        int temp = 0;
+        for(int i = -1; i <= 1; i++) {
+            for(int j = -1; j <= 1; j++) {
+                temp = max(temp, solve(grid, n+1, m1+i, m2+j, dp));
+            }
         }
-        else return dp[n][m1][m2] = max({a,b,c,d,e,f,g,h,i}) + grid[n][m1] + grid[n][m2];
+        int ans = temp + grid[n][m1];
+        return m1 == m2 ? dp[n][m1][m2] = ans :  dp[n][m1][m2] = ans + grid[n][m2];        
     } 
 
 
