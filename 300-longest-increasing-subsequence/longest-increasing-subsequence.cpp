@@ -1,22 +1,21 @@
 class Solution {
 public:
-
-    int solve(int i, int pi, vector<int>& nums, vector<vector<int>> &dp) {
-        if(i >= nums.size()) return 0;
-        if(dp[i][pi+1] != -1) return dp[i][pi+1];
-
-        int len = solve(i+1, pi, nums, dp);
-        // int take = INT_MIN;  
-        if(pi == -1 || nums[pi] < nums[i]) {
-            len = max(len, 1 + solve(i+1, i, nums, dp));
-        }
-        return dp[i][pi+1] = len;
-        
-    }
-
     int lengthOfLIS(vector<int>& nums) {
         int n = nums.size();
-        vector<vector<int>> dp(n+1, vector<int>(n+1, -1));
-        return solve(0, -1, nums, dp);
+        // dp[i][j] = LIS starting at index i, with previous index j-1 (j shifted by +1)
+        vector<vector<int>> dp(n+1, vector<int>(n+1, 0));
+
+        for(int i = n - 1; i >= 0; i--) {
+            for(int j = n; j >= 0; j--) {
+                int len = dp[i+1][j]; // skip nums[i]
+                if(j == n || nums[i] > nums[j]) {
+                    len = max(len, 1 + dp[i+1][i]);
+                }
+                dp[i][j] = len;
+            }
+        }
+
+        return dp[0][n]; // start from i=0 with previous index = -1 (mapped to n)
     }
 };
+// 
