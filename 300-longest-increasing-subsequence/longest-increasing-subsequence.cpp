@@ -6,16 +6,16 @@ public:
         vector<vector<int>> dp(n+1, vector<int>(n+1, 0));
 
         for(int i = n - 1; i >= 0; i--) {
-            for(int j = n; j >= 0; j--) {
-                int len = dp[i+1][j]; // skip nums[i]
-                if(j == n || nums[i] > nums[j]) {
-                    len = max(len, 1 + dp[i+1][i]);
+            for(int j = i - 1; j >= -1; j--) {
+                int len = dp[i+1][j+1]; // skip nums[i]
+                if(j == -1 || nums[i] > nums[j]) {
+                    len = max(len, 1 + dp[i+1][i+1]);
                 }
-                dp[i][j] = len;
+                dp[i][j+1] = len;
             }
         }
 
-        return dp[0][n]; // start from i=0 with previous index = -1 (mapped to n)
+        return dp[0][0]; // start from i=0 with previous index = -1 (mapped to n)
     }
 };
 // 
