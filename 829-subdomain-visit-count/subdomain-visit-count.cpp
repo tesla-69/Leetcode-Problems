@@ -15,7 +15,7 @@ public:
 
             int len = t.size();
             t = cpdomains[i].substr(j, len);
-            cout<<t<<" ";
+            // cout<<t<<" ";
             j = 0;
             mp[t] += num;
             len = t.size();
