@@ -9,12 +9,12 @@ public:
             int n = s.size();
             for(int i = 0; i < n; i++) {
                 char ch = s[i];
-                cout<<ch<<" ";
+                // cout<<ch<<" ";
                 ch += 1;
                 t += ch;
-                cout<<ch<<" ";
+                // cout<<ch<<" ";
             } 
-            cout<<endl;
+            // cout<<endl;
             s += t;
         }
         return s[k-1];
