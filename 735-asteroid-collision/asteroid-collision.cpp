@@ -1,41 +1,33 @@
 class Solution {
 public:
-    vector<int> asteroidCollision(vector<int>& asteroids) {
-        stack<int> st;
-        int n = asteroids.size();
-        for (int i = 0; i < n; i++) {
-            if (st.empty()) {
-                st.push(asteroids[i]);
-                continue;
-            }
-            else if (st.top() > 0 && asteroids[i] < 0) {
-                while (!st.empty() && st.top()>0 && (st.top()) < -(asteroids[i])) {
-                    st.pop();
+    vector<int> asteroidCollision(vector<int>& arr) {
+        stack<int> s;
+        vector<int> ans;
+        for(auto it: arr) {
+            if(s.empty()) s.push(it);
+            else{
+                if(it > 0) s.push(it);
+                else {
+                    if(s.top() < 0) s.push(it);
+                    else {
+                        while(!s.empty() && s.top() > 0 && s.top() < abs(it)) {
+                            s.pop();
+                        }
+                        if(s.empty()) s.push(it);
+                        else if(s.top() < 0) s.push(it);
+                        else if(s.top() == abs(it)) {
+                            s.pop();
+                            continue;
+                        }
+                    }
                 }
-                if(st.empty()) {
-                    st.push(asteroids[i]);
-                    continue;
-                }
-                if ((st.top()) == -(asteroids[i]))
-                    st.pop();
-                else if((st.top()) == (asteroids[i])) st.push(asteroids[i]);
-                else if(st.top()<0 && asteroids[i]<0) st.push(asteroids[i]);
             }
-            else if (!st.empty() && st.top() > 0 && asteroids[i] > 0) {
-                st.push(asteroids[i]);
-            }
-            else if (!st.empty() && st.top() < 0 && asteroids[i] < 0) {
-                st.push(asteroids[i]);
-            }
-             else if (!st.empty() && st.top() < 0 && asteroids[i] > 0)
-                st.push(asteroids[i]);
         }
-        vector<int> ans = {};
-        while (!st.empty()) {
-            ans.push_back(st.top());
-            st.pop();
+        while(!s.empty()) {
+            ans.push_back(s.top());
+            s.pop();
         }
-        reverse(ans.begin() , ans.end());
+        reverse(ans.begin(), ans.end());
         return ans;
     }
 };
