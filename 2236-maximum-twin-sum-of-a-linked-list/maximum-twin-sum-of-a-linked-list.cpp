@@ -22,7 +22,6 @@ public:
         }
         i--;
         int maxi = 0;
-        int cnt = 1;
         while(slow != NULL) {
             maxi = max(maxi, slow->val + mp[i--]);
             slow = slow->next;
