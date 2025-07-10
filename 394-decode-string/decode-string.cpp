@@ -1,39 +1,41 @@
 class Solution {
 public:
     string decodeString(string s) {
-        stack<int> counts;
-        stack<string> result;
-        string currentString = "";
-        int index = 0;
-
-        while (index < s.size()) {
-            if (isdigit(s[index])) {
-                int count = 0;
-                while (isdigit(s[index])) {
-                    count = count * 10 + (s[index] - '0');
-                    index++;
-                }
-                counts.push(count);
-            } else if (s[index] == '[') {
-                result.push(currentString);
-                currentString = "";
-                index++;
-            } else if (s[index] == ']') {
-                string temp = currentString;
-                currentString = result.top();
-                result.pop();
-                int count = counts.top();
-                counts.pop();
-                while (count > 0) {
-                    currentString += temp;
-                    count--;
-                }
-                index++;
-            } else {
-                currentString += s[index];
-                index++;
+        stack<char>st;
+        
+        int n = s.size();
+        int i = 0;
+        while(i < n) {
+            if(s[i] != ']'){
+                st.push(s[i]);
             }
+            else {
+                string curr;
+                while(st.top() != '[') {
+                    curr += st.top();
+                    st.pop();
+                }
+                reverse(curr.begin(), curr.end());
+                st.pop();
+                string num;
+                while(!st.empty() && isdigit(st.top())){
+                    num += st.top();
+                    st.pop();
+                }
+                reverse(num.begin(), num.end());
+                int sz = stoi(num);
+                for(int j = 0; j < sz; j++) {
+                    for(auto it: curr) st.push(it);
+                }
+            }
+            i++;
         }
-        return currentString;
+        string ans;
+        while(!st.empty()) {
+            ans += st.top();
+            st.pop();
+        }
+        reverse(ans.begin(), ans.end());
+        return ans;
     }
 };
