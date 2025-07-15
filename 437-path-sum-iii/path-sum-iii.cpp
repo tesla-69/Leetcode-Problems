@@ -12,22 +12,20 @@
 class Solution {
 public:
 
-    void solve(TreeNode* root, int &tar, long long sum, map<long long,int> &mp, int &cnt) {
+    void solve(TreeNode* root, int &tar, long long sum, unordered_map<long long,int> &mp, int &cnt) {
         if(!root) return;
         sum += root->val;
         if(mp.find(sum - tar) != mp.end()) {
             cnt += mp[sum - tar];
         }
         mp[sum]++;
-
         solve(root->left, tar, sum, mp, cnt);
         solve(root->right, tar, sum, mp, cnt);
-
         mp[sum]--;
     }
 
     int pathSum(TreeNode* root, int targetSum) {
-        map<long long,int> mp;
+        unordered_map<long long,int> mp;
         mp[0] = 1;
         int cnt = 0;
         solve(root, targetSum, 0*1ll, mp, cnt);
