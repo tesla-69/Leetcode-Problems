@@ -1,8 +1,3 @@
-// OJ: https://leetcode.com/contest/weekly-contest-251/problems/delete-duplicate-folders-in-system/
-// Author: github.com/lzl124631x
-// Time: O(NDWlogC + N^2 * W) where `N` is the number of folders, `W` is the maximum length of folder name, 
-//                                  `D` is the deepest folder depth, and `C` is the maximum number of direct child folders.
-// Space: O(N^2 * W)
 struct Node {
     string name;
     map<string, Node*> next; // mapping from folder name to the corresponding child node.
